@@ -19,5 +19,7 @@ export const env = {
   MONGODB_URI: required('MONGODB_URI'),
   CORS_ORIGIN: process.env.CORS_ORIGIN || '*',
   RATE_LIMIT_MAX: Number.parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
+  JWT_SECRET: required('JWT_SECRET'),
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
   isProduction: (process.env.NODE_ENV || 'development') === 'production',
 };

@@ -3,6 +3,10 @@ import { AppError } from '../utils/AppError.js';
 import { env } from '../config/env.js';
 import { buildErrorPayload } from '../utils/response.js';
 
+function isJwtError(err) {
+  return err?.name === 'JsonWebTokenError' || err?.name === 'TokenExpiredError';
+}
+
 function isMongooseCastError(err) {
   return err instanceof mongoose.Error.CastError;
 }
@@ -26,7 +30,10 @@ export function errorHandler(err, req, res, next) {
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal Server Error';
 
-  if (isMongooseCastError(err)) {
+  if (isJwtError(err)) {
+    statusCode = 401;
+    message = 'Not authorized, invalid token';
+  } else if (isMongooseCastError(err)) {
     statusCode = 400;
     message = 'Invalid resource identifier';
   } else if (isMongooseValidationError(err)) {
