@@ -1,54 +1,38 @@
 import { Link, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth.js';
+import { Button } from '@/components/ui/Button.jsx';
 
 export function MainLayout() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:px-8">
           <Link to="/" className="text-lg font-semibold text-slate-900">
             AI Interview Prep
           </Link>
-          <nav className="flex items-center gap-4 text-sm">
-            <Link to="/" className="text-slate-600 hover:text-slate-900">
-              Home
-            </Link>
+          <nav className="flex items-center gap-3 text-sm">
             {isAuthenticated ? (
-              <>
-                <Link to="/dashboard" className="text-slate-600 hover:text-slate-900">
-                  Dashboard
-                </Link>
-                <span className="text-slate-500">{user?.fullName}</span>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="rounded-md border border-slate-300 px-3 py-1 hover:bg-slate-50"
-                >
-                  Logout
-                </button>
-              </>
+              <Button to="/dashboard" variant="primary" size="sm">
+                Dashboard
+              </Button>
             ) : (
               <>
                 <Link to="/login" className="text-slate-600 hover:text-slate-900">
                   Login
                 </Link>
-                <Link
-                  to="/register"
-                  className="rounded-md bg-slate-900 px-3 py-1 text-white hover:bg-slate-800"
-                >
-                  Register
-                </Link>
+                <Button to="/register" variant="primary" size="sm">
+                  Get started
+                </Button>
               </>
             )}
           </nav>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 lg:px-8">
         <Outlet />
       </main>
     </div>
   );
 }
-

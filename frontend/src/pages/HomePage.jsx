@@ -1,27 +1,34 @@
-import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth.js';
+import { Button } from '@/components/ui/Button.jsx';
 
 export function HomePage() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <section>
-      <h1 className="text-2xl font-semibold text-slate-900">AI Interview Preparation Platform</h1>
-      <p className="mt-2 text-slate-600">
-        Practice interviews with AI-powered feedback. Architecture foundation is ready.
+    <section className="py-12 text-center lg:py-20">
+      <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        AI Interview Preparation Platform
+      </h1>
+      <p className="mx-auto mt-4 max-w-xl text-slate-600">
+        Practice interviews with AI-powered feedback. Your dashboard foundation is ready for
+        upcoming interview modules.
       </p>
-      <p className="mt-6">
+      <div className="mt-8 flex justify-center gap-3">
         {isAuthenticated ? (
-          <Link to="/dashboard" className="text-slate-900 underline">
-            Go to dashboard
-          </Link>
+          <Button to="/dashboard" size="lg">
+            Open dashboard
+          </Button>
         ) : (
-          <Link to="/login" className="text-slate-900 underline">
-            Sign in to get started
-          </Link>
+          <>
+            <Button to="/register" size="lg">
+              Get started
+            </Button>
+            <Button to="/login" variant="secondary" size="lg">
+              Sign in
+            </Button>
+          </>
         )}
-      </p>
+      </div>
     </section>
   );
 }
-
