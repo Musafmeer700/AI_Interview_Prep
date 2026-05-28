@@ -4,6 +4,10 @@ export const endpoints = {
     login: '/auth/login',
     me: '/auth/me',
   },
+  interviews: {
+    base: '/interviews',
+    byId: (id) => `/interviews/${id}`,
+  },
   health: '/health',
 };
 

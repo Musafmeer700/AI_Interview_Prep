@@ -16,6 +16,12 @@ export const dashboardNavItems = [
     icon: 'profile',
   },
   {
+    id: 'create-interview',
+    label: 'New Interview',
+    href: '/dashboard/interviews/new',
+    icon: 'create',
+  },
+  {
     id: 'history',
     label: 'Interview History',
     href: '/dashboard/history',

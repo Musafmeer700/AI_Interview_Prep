@@ -22,3 +22,14 @@ export function validateBody(schema) {
   };
 }
 
+export function validateParams(schema) {
+  return (req, _res, next) => {
+    const result = schema.safeParse(req.params);
+    if (!result.success) {
+      return next(new AppError(formatZodError(result.error), 400));
+    }
+    req.params = result.data;
+    return next();
+  };
+}
+

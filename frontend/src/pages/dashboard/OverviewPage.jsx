@@ -1,26 +1,48 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks.js';
+import { fetchSessions, selectInterviewListStatus, selectInterviewSessions } from '@/features/interviews/slice/interviewSlice.js';
 import { PageHeader } from '@/components/ui/PageHeader.jsx';
 import { Card, CardBody } from '@/components/ui/Card.jsx';
+import { Button } from '@/components/ui/Button.jsx';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner.jsx';
 import { useAuth } from '@/hooks/useAuth.js';
-
-const statPlaceholders = [
-  { label: 'Interviews completed', value: '—' },
-  { label: 'Practice hours', value: '—' },
-  { label: 'Average score', value: '—' },
-  { label: 'Streak (days)', value: '—' },
-];
 
 export function OverviewPage() {
   const { user } = useAuth();
+  const dispatch = useAppDispatch();
+  const sessions = useAppSelector(selectInterviewSessions);
+  const listStatus = useAppSelector(selectInterviewListStatus);
+
+  useEffect(() => {
+    if (listStatus === 'idle') {
+      dispatch(fetchSessions());
+    }
+  }, [dispatch, listStatus]);
+
+  const completedCount = sessions.filter((s) => s.status === 'completed').length;
+  const draftCount = sessions.filter((s) => s.status === 'draft').length;
+
+  const stats = [
+    { label: 'Total sessions', value: listStatus === 'loading' ? '…' : sessions.length },
+    { label: 'Completed', value: listStatus === 'loading' ? '…' : completedCount },
+    { label: 'Drafts', value: listStatus === 'loading' ? '…' : draftCount },
+    { label: 'Average score', value: '—' },
+  ];
+
+  if (listStatus === 'loading' && sessions.length === 0) {
+    return <LoadingSpinner label="Loading overview…" />;
+  }
 
   return (
     <>
       <PageHeader
         title="Overview"
-        description={`Welcome back, ${user?.fullName ?? 'there'}. Your interview metrics will appear here.`}
+        description={`Welcome back, ${user?.fullName ?? 'there'}. Track your interview preparation progress.`}
+        actions={<Button to="/dashboard/interviews/new" size="sm">New session</Button>}
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {statPlaceholders.map((stat) => (
+        {stats.map((stat) => (
           <Card key={stat.label}>
             <CardBody>
               <p className="text-sm font-medium text-slate-500">{stat.label}</p>
@@ -33,9 +55,15 @@ export function OverviewPage() {
       <Card className="mt-6">
         <CardBody>
           <p className="text-sm text-slate-600">
-            Interview modules are not connected yet. This overview is ready for future analytics
-            and quick actions.
+            Create a new interview session to configure role, tech stack, and difficulty. AI
+            questions and scoring will be connected in a future release.
           </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Button to="/dashboard/interviews/new">Create session</Button>
+            <Button to="/dashboard/history" variant="secondary">
+              View history
+            </Button>
+          </div>
         </CardBody>
       </Card>
     </>

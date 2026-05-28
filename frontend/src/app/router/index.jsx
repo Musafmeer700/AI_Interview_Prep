@@ -10,7 +10,9 @@ import { LoginPage } from '@/pages/LoginPage.jsx';
 import { RegisterPage } from '@/pages/RegisterPage.jsx';
 import { OverviewPage } from '@/pages/dashboard/OverviewPage.jsx';
 import { ProfilePage } from '@/pages/dashboard/ProfilePage.jsx';
+import { CreateInterviewPage } from '@/pages/dashboard/CreateInterviewPage.jsx';
 import { InterviewHistoryPage } from '@/pages/dashboard/InterviewHistoryPage.jsx';
+import { InterviewSessionDetailPage } from '@/pages/dashboard/InterviewSessionDetailPage.jsx';
 import { SettingsPage } from '@/pages/dashboard/SettingsPage.jsx';
 
 export const router = createBrowserRouter([
@@ -37,6 +39,16 @@ export const router = createBrowserRouter([
                 path: 'profile',
                 element: <ProfilePage />,
                 handle: { title: 'Profile' },
+              },
+              {
+                path: 'interviews/new',
+                element: <CreateInterviewPage />,
+                handle: { title: 'New Interview' },
+              },
+              {
+                path: 'interviews/:sessionId',
+                element: <InterviewSessionDetailPage />,
+                handle: { title: 'Session Details' },
               },
               {
                 path: 'history',
